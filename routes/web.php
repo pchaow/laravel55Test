@@ -22,27 +22,12 @@ Route::get('/major', function () {
     return $view;
 
 });
-Route::get('/major/create', function () {
-    $view = view('major.create');
-    return $view;
-});
-Route::post('/major/create', function (\Illuminate\Http\Request $request) {
-    $form = $request->all();
-    $newMajor = new \App\Models\Major();
-    $newMajor->name = $form['name'];
-    $newMajor->desc = $form['desc'];
-    $newMajor->save();
-    return redirect('/major/');
-});
 
-Route::get('/major/{id}/edit', function ($id) {
-    $query = \App\Models\Major::query();
-    $query->where('id', $id);
-    $major = $query->first();
-    $view = view('major.edit');
-    $view->with('major', $major);
-    return $view;
-});
+
+Route::get('/major/create',"MajorController@create" );
+Route::post('/major/create', "MajorController@doCreate");
+
+Route::get('/major/{id}/edit', "MajorController@edit");
 
 Route::post('/major/{id}/edit', function (\Illuminate\Http\Request $request, $id) {
     $major = \App\Models\Major::find($id);
