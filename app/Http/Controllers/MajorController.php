@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Major;
 use Illuminate\Http\Request;
 
 class MajorController extends Controller
@@ -13,9 +13,11 @@ class MajorController extends Controller
      */
     public function index()
     {
-        //
+        $majors = Major::all();
+        $view = view('major.index');
+        $view->with('majors', $majors);
+        return $view;
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -36,12 +38,6 @@ class MajorController extends Controller
         return redirect('/major/');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
@@ -83,7 +79,14 @@ class MajorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $major = \App\Models\Major::find($id);
+        $form = $request->all();
+        if ($form['id'] == $id) {
+            $major->name = $form['name'];
+            $major->desc = $form['desc'];
+            $major->save();
+        }
+        return redirect('major/');
     }
 
     /**
@@ -92,8 +95,13 @@ class MajorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $major = \App\Models\Major::find($id);
+        $form = $request->all();
+        if ($form['id'] == $id) {
+            $major->delete();
+        }
+        return redirect('major/');
     }
 }
