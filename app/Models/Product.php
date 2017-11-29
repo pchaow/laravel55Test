@@ -12,11 +12,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
-class Major extends Model
+class Product extends Model
 {
     public $timestamps = false;
 
-    public function products() {
-        return $this->hasMany(Product::class);
+    public function major(){
+        return $this->belongsTo(Major::class);
     }
 }
